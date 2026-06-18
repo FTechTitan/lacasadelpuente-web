@@ -278,13 +278,9 @@
     <div class="hero-booking-card">
       <h3><i class="fas fa-search" style="color:var(--azul);margin-right:8px"></i>Busca disponibilidad</h3>
       <div class="bk-form">
-        <div class="bk-field">
-          <label>Llegada</label>
-          <input type="text" id="bk-checkin" placeholder="dd/mm/aaaa" readonly>
-        </div>
-        <div class="bk-field">
-          <label>Salida</label>
-          <input type="text" id="bk-checkout" placeholder="dd/mm/aaaa" readonly>
+        <div class="bk-field" style="flex:2;min-width:200px;">
+          <label>Llegada → Salida</label>
+          <input type="text" id="bk-rango" placeholder="Selecciona fechas" readonly>
         </div>
         <div class="bk-field">
           <label>Adultos</label>
@@ -536,39 +532,21 @@
 </section>
 
 <script>
-  // Flatpickr — calendarios de llegada y salida
+  // Flatpickr — selector de rango (llegada y salida en un solo calendario)
   var hoy = new Date();
   var manana = new Date(); manana.setDate(hoy.getDate() + 1);
   var pasado = new Date(); pasado.setDate(hoy.getDate() + 2);
 
-  var fpCheckin = flatpickr('#bk-checkin', {
+  var fpRango = flatpickr('#bk-rango', {
     locale: 'es',
+    mode: 'range',
     dateFormat: 'd/m/Y',
     minDate: 'today',
-    defaultDate: manana,
-    disableMobile: true,
-    onChange: function(dates) {
-      if (dates[0]) {
-        var minCO = new Date(dates[0]);
-        minCO.setDate(minCO.getDate() + 1);
-        fpCheckout.set('minDate', minCO);
-        if (fpCheckout.selectedDates[0] && fpCheckout.selectedDates[0] <= dates[0]) {
-          fpCheckout.setDate(minCO);
-        }
-      }
-    }
-  });
-
-  var fpCheckout = flatpickr('#bk-checkout', {
-    locale: 'es',
-    dateFormat: 'd/m/Y',
-    minDate: pasado,
-    defaultDate: pasado,
+    defaultDate: [manana, pasado],
     disableMobile: true,
   });
 
-  function fmtISO(fp) {
-    var d = fp.selectedDates[0];
+  function fmtISO(d) {
     if (!d) return '';
     var y = d.getFullYear();
     var m = String(d.getMonth()+1).padStart(2,'0');
@@ -577,8 +555,10 @@
   }
 
   function buscarDisponibilidad() {
-    var checkin  = fmtISO(fpCheckin);
-    var checkout = fmtISO(fpCheckout);
+    var fechas = fpRango.selectedDates;
+    if (fechas.length < 2) { alert('Selecciona fecha de llegada y salida'); return; }
+    var checkin  = fmtISO(fechas[0]);
+    var checkout = fmtISO(fechas[1]);
     if (!checkin || !checkout) { alert('Selecciona las fechas de llegada y salida'); return; }
 
     var adultos = document.getElementById('bk-adultos').value;
