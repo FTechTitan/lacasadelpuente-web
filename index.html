@@ -405,13 +405,174 @@
 <!-- RESERVA CTA -->
 <section class="reserva" id="reserva">
   <h2>¿Listo para reservar?</h2>
-  <p>Habitaciones disponibles desde $25.000 diarios. Reserva fácil y rápido.</p>
-  <div class="reserva-btns">
+  <p>Habitaciones disponibles desde $25.000 diarios. Selecciona tus fechas y reserva en línea.</p>
+
+  <!-- Widget motor de reservas OTASync -->
+  <div class="booking-widget">
+    <div class="booking-form">
+      <div class="booking-field">
+        <label for="bk-checkin"><i class="fas fa-calendar-alt"></i> Llegada</label>
+        <input type="date" id="bk-checkin">
+      </div>
+      <div class="booking-field">
+        <label for="bk-checkout"><i class="fas fa-calendar-alt"></i> Salida</label>
+        <input type="date" id="bk-checkout">
+      </div>
+      <div class="booking-field">
+        <label for="bk-adultos"><i class="fas fa-user"></i> Adultos</label>
+        <select id="bk-adultos">
+          <option value="1">1 Adulto</option>
+          <option value="2" selected>2 Adultos</option>
+          <option value="3">3 Adultos</option>
+          <option value="4">4 Adultos</option>
+        </select>
+      </div>
+      <div class="booking-field">
+        <label for="bk-ninos"><i class="fas fa-child"></i> Niños</label>
+        <select id="bk-ninos">
+          <option value="0" selected>0 Niños</option>
+          <option value="1">1 Niño</option>
+          <option value="2">2 Niños</option>
+          <option value="3">3 Niños</option>
+        </select>
+      </div>
+      <button class="btn-buscar" onclick="buscarDisponibilidad()">
+        <i class="fas fa-search"></i> Ver disponibilidad
+      </button>
+    </div>
+  </div>
+
+  <!-- Iframe motor OTASync (se activa al buscar) -->
+  <div id="motor-container" style="display:none; margin-top:32px;">
+    <iframe id="motor-iframe"
+      src=""
+      width="100%"
+      height="700"
+      frameborder="0"
+      style="border-radius:12px; background:#fff;">
+    </iframe>
+  </div>
+
+  <div class="reserva-btns" style="margin-top:28px;">
     <a href="https://wa.me/56994999752?text=Hola,%20quiero%20reservar%20en%20Hostal%20La%20Casa%20del%20Puente" target="_blank" class="btn-whatsapp">
-      <i class="fab fa-whatsapp" style="margin-right:8px"></i>Reservar Ahora
+      <i class="fab fa-whatsapp" style="margin-right:8px"></i>Reservar por WhatsApp
     </a>
   </div>
 </section>
+
+<style>
+  .booking-widget {
+    max-width: 900px;
+    margin: 32px auto 0;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 16px;
+    padding: 28px 24px;
+    backdrop-filter: blur(4px);
+  }
+  .booking-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .booking-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 150px;
+    flex: 1;
+  }
+  .booking-field label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .booking-field input,
+  .booking-field select {
+    height: 46px;
+    padding: 0 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: 'Lato', sans-serif;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .booking-field input:focus,
+  .booking-field select:focus { border-color: #fff; }
+  .booking-field select option { background: #1e2a35; color: #fff; }
+  .btn-buscar {
+    height: 46px;
+    padding: 0 28px;
+    background: var(--azul);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .btn-buscar:hover { opacity: 0.85; }
+  @media (max-width: 600px) {
+    .booking-field { min-width: 100%; }
+    .btn-buscar { width: 100%; justify-content: center; }
+  }
+</style>
+
+<script>
+  // Setear fechas por defecto (hoy y mañana)
+  (function() {
+    var hoy = new Date();
+    var manana = new Date();
+    manana.setDate(hoy.getDate() + 1);
+    var fmt = function(d) { return d.toISOString().split('T')[0]; };
+    document.getElementById('bk-checkin').value = fmt(hoy);
+    document.getElementById('bk-checkout').value = fmt(manana);
+    document.getElementById('bk-checkin').min = fmt(hoy);
+    document.getElementById('bk-checkout').min = fmt(manana);
+    document.getElementById('bk-checkin').addEventListener('change', function() {
+      var ci = new Date(this.value + 'T12:00:00');
+      ci.setDate(ci.getDate() + 1);
+      document.getElementById('bk-checkout').min = fmt(ci);
+      if (document.getElementById('bk-checkout').value <= this.value) {
+        document.getElementById('bk-checkout').value = fmt(ci);
+      }
+    });
+  })();
+
+  function buscarDisponibilidad() {
+    var checkin  = document.getElementById('bk-checkin').value;
+    var checkout = document.getElementById('bk-checkout').value;
+    var adultos  = document.getElementById('bk-adultos').value;
+    var ninos    = document.getElementById('bk-ninos').value;
+
+    var url = 'https://app.otasync.me/engine/es/index.php'
+      + '?property_code=MTE0OTU'
+      + '&dfrom=' + checkin
+      + '&dto='   + checkout
+      + '&adults=' + adultos
+      + '&children=' + ninos
+      + '&chlidren=' + ninos
+      + '&currency=CLP';
+
+    var container = document.getElementById('motor-container');
+    var iframe    = document.getElementById('motor-iframe');
+    iframe.src = url;
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
 
 <!-- FOOTER -->
 <footer>
