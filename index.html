@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hostal La Casa del Puente - Ñuñoa, Santiago</title>
+<meta name="description" content="Hostal La Casa del Puente en Ñuñoa, Santiago. Tu lugar tranquilo en el corazón de Santiago. A 4 minutos del Metro Monseñor Eyzaguirre.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --azul: #1aa3c9;
+    --gris: #555f6e;
+    --oscuro: #1e2a35;
+    --claro: #f7f9fb;
+    --blanco: #ffffff;
+  }
+  body { font-family: 'Lato', sans-serif; color: var(--oscuro); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(30,42,53,0.95); backdrop-filter: blur(6px);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 40px;
+  }
+  nav .logo { display: flex; align-items: center; gap: 12px; }
+  nav .logo img { height: 44px; }
+  nav ul { list-style: none; display: flex; gap: 28px; }
+  nav ul a { color: #ccc; text-decoration: none; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; transition: color .3s; }
+  nav ul a:hover { color: var(--azul); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(rgba(20,30,40,0.6), rgba(20,30,40,0.7)),
+      url('images/header.jpeg') center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    padding: 100px 20px 60px;
+  }
+  .hero-content { max-width: 760px; }
+  .hero-badge {
+    display: inline-block; background: var(--azul); color: #fff;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    padding: 6px 18px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    color: #fff; line-height: 1.15; margin-bottom: 20px;
+  }
+  .hero p { font-size: 1.15rem; color: #ddd; margin-bottom: 36px; font-weight: 300; }
+  .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--azul); color: #fff; padding: 14px 32px;
+    border-radius: 4px; text-decoration: none; font-weight: 700;
+    letter-spacing: 1px; transition: background .3s;
+  }
+  .btn-primary:hover { background: #1490b3; }
+  .btn-outline {
+    border: 2px solid #fff; color: #fff; padding: 12px 30px;
+    border-radius: 4px; text-decoration: none; font-weight: 700;
+    letter-spacing: 1px; transition: all .3s;
+  }
+  .btn-outline:hover { background: #fff; color: var(--oscuro); }
+
+  /* PRECIO BANNER */
+  .precio-banner {
+    background: var(--oscuro); color: #fff;
+    text-align: center; padding: 22px 20px;
+    display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+  }
+  .precio-banner .desde { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: #aaa; }
+  .precio-banner .monto { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--azul); font-weight: 700; }
+  .precio-banner .detalle { font-size: 0.85rem; color: #bbb; }
+
+  /* SECCIONES */
+  section { padding: 80px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    text-align: center; margin-bottom: 50px;
+  }
+  .section-title span {
+    display: block; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--azul); margin-bottom: 10px;
+  }
+  .section-title h2 {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--oscuro);
+  }
+  .divider { width: 50px; height: 3px; background: var(--azul); margin: 14px auto 0; }
+
+  /* NOSOTROS */
+  .nosotros { background: var(--claro); }
+  .nosotros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .nosotros-img { border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+  .nosotros-img img { width: 100%; display: block; height: 420px; object-fit: cover; }
+  .nosotros-text h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 16px; }
+  .nosotros-text p { color: #666; line-height: 1.8; margin-bottom: 14px; }
+
+  /* SERVICIOS */
+  .servicios { background: var(--blanco); }
+  .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; }
+  .servicio-card {
+    text-align: center; padding: 36px 24px; border-radius: 8px;
+    border: 1px solid #e8edf2; transition: transform .3s, box-shadow .3s;
+  }
+  .servicio-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+  .servicio-card .icon {
+    width: 64px; height: 64px; background: #e8f6fb; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
+  }
+  .servicio-card .icon i { font-size: 1.6rem; color: var(--azul); }
+  .servicio-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+  .servicio-card p { font-size: 0.88rem; color: #888; line-height: 1.6; }
+
+  /* HABITACIONES */
+  .habitaciones { background: var(--claro); }
+  .hab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+  .hab-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .hab-card img { width: 100%; height: 220px; object-fit: cover; }
+  .hab-card-body { padding: 24px; }
+  .hab-card-body h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 8px; }
+  .hab-card-body p { font-size: 0.9rem; color: #777; line-height: 1.6; }
+  .hab-tag {
+    display: inline-block; background: #e8f6fb; color: var(--azul);
+    font-size: 0.78rem; padding: 4px 10px; border-radius: 12px; margin-top: 12px; margin-right: 4px;
+  }
+
+  /* UBICACION */
+  .ubicacion { background: var(--blanco); }
+  .ubicacion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+  .ubicacion-info h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 20px; }
+  .punto-interes { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+  .punto-interes .ico { color: var(--azul); font-size: 1.1rem; margin-top: 2px; min-width: 20px; }
+  .punto-interes p { font-size: 0.95rem; color: #555; line-height: 1.5; }
+  .mapa-wrap { border-radius: 8px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+  .mapa-wrap iframe { display: block; width: 100%; height: 380px; border: none; }
+
+  /* INFO PRACTICA */
+  .info-practica { background: var(--oscuro); color: #fff; }
+  .info-practica .section-title h2 { color: #fff; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 10px; }
+  .info-item { text-align: center; padding: 30px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
+  .info-item i { font-size: 1.8rem; color: var(--azul); margin-bottom: 12px; }
+  .info-item h4 { font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+  .info-item p { font-size: 1rem; color: #fff; }
+
+  /* RESERVA */
+  .reserva { background: var(--azul); color: #fff; text-align: center; padding: 70px 20px; }
+  .reserva h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 14px; }
+  .reserva p { font-size: 1.05rem; opacity: .9; margin-bottom: 36px; }
+  .reserva-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .btn-blanco { background: #fff; color: var(--azul); padding: 14px 32px; border-radius: 4px; text-decoration: none; font-weight: 700; transition: opacity .3s; }
+  .btn-blanco:hover { opacity: .88; }
+  .btn-whatsapp { background: #25d366; color: #fff; padding: 14px 32px; border-radius: 4px; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: opacity .3s; }
+  .btn-whatsapp:hover { opacity: .88; }
+
+  /* FOOTER */
+  footer { background: #111820; color: #aaa; text-align: center; padding: 30px 20px; font-size: 0.88rem; }
+  footer a { color: var(--azul); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 12px 20px; }
+    nav ul { display: none; }
+    .nosotros-grid, .ubicacion-grid { grid-template-columns: 1fr; }
+    .nosotros-img img { height: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <img src="images/Logo-01.png" alt="Hostal La Casa del Puente" style="height:50px;">
+  </div>
+  <ul>
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="index.html#habitaciones">Habitaciones</a></li>
+    <li><a href="index.html#ubicacion">Ubicación</a></li>
+    <li><a href="index.html#reserva">Reservar</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Hostal en Ñuñoa · Santiago</div>
+    <h1>Tu lugar tranquilo<br>en el corazón de Santiago</h1>
+    <p>Habitaciones cómodas, atención personalizada y todo lo que necesitas<br>a pasos del metro y los mejores barrios de Santiago.</p>
+    <div class="btn-group">
+      <a href="https://wa.me/56994999752?text=Hola,%20quiero%20reservar%20en%20Hostal%20La%20Casa%20del%20Puente" target="_blank" class="btn-primary">
+        <i class="fab fa-whatsapp" style="margin-right:8px"></i>Reservar
+      </a>
+      <a href="index.html#habitaciones" class="btn-outline">Ver habitaciones</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRECIO BANNER -->
+<div class="precio-banner">
+  <span class="desde">Precio desde</span>
+  <span class="monto">$25.000</span>
+  <span class="detalle">diarios · habitación individual con baño compartido</span>
+</div>
+
+<!-- NOSOTROS -->
+<section class="nosotros" id="nosotros">
+  <div class="container">
+    <div class="nosotros-grid">
+      <div class="nosotros-img">
+        <img src="images/quienes-somos.jpeg" alt="Hostal La Casa del Puente">
+      </div>
+      <div class="nosotros-text">
+        <div class="section-title" style="text-align:left">
+          <span>Quiénes somos</span>
+          <h2>Más que un hostal,<br>un hogar en Santiago</h2>
+          <div class="divider" style="margin:14px 0 0"></div>
+        </div>
+        <p style="margin-top:20px">Hostal La Casa del Puente es un espacio pensado para quienes buscan comodidad, tranquilidad y calidez en su estadía en Santiago. Ubicados en el corazón de Ñuñoa, te ofrecemos habitaciones bien equipadas y una atención cercana y personalizada.</p>
+        <p>Somos atendidos por nuestro propio dueño, siempre dispuesto a ayudarte, recomendarte lugares y hacer que tu estadía sea especial.</p>
+        <div style="display:flex;gap:30px;margin-top:28px">
+          <div style="text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--azul);font-weight:700">11</div>
+            <div style="font-size:0.82rem;color:#888;text-transform:uppercase;letter-spacing:1px">Habitaciones</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--azul);font-weight:700">10"</div>
+            <div style="font-size:0.82rem;color:#888;text-transform:uppercase;letter-spacing:1px">Del Metro</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--azul);font-weight:700">9:30 - 22:30</div>
+            <div style="font-size:0.82rem;color:#888;text-transform:uppercase;letter-spacing:1px">Atención</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios" id="servicios">
+  <div class="container">
+    <div class="section-title">
+      <span>Lo que incluimos</span>
+      <h2>Servicios incluidos sin costo</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="servicios-grid">
+      <div class="servicio-card">
+        <div class="icon"><i class="fas fa-wifi"></i></div>
+        <h4>WiFi Gratis</h4>
+        <p>Conexión a internet de alta velocidad en habitaciones y espacios comunes.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="icon"><i class="fas fa-tv"></i></div>
+        <h4>TV con Cable y Netflix</h4>
+        <p>Todas las habitaciones cuentan con televisión por cable y acceso a Netflix.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="icon"><i class="fas fa-utensils"></i></div>
+        <h4>Kitchenette Equipada</h4>
+        <p>Refrigerador, microondas, hervidor, loza y cubiertos disponibles para todos.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="icon"><i class="fas fa-car"></i></div>
+        <h4>Estacionamiento</h4>
+        <p>Estacionamiento privado gratuito con reserva previa.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="icon"><i class="fas fa-bath"></i></div>
+        <h4>Toallas y Secador</h4>
+        <p>Disponibles al momento del check-in previa solicitud.</p>
+      </div>
+      <div class="servicio-card">
+        <div class="icon"><i class="fas fa-mug-hot"></i></div>
+        <h4>Té y Café de Cortesía</h4>
+        <p>Damos té y café de bienvenida a todos nuestros huéspedes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HABITACIONES -->
+<section class="habitaciones" id="habitaciones">
+  <div class="container">
+    <div class="section-title">
+      <span>Alojamiento</span>
+      <h2>Nuestras Habitaciones</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="hab-grid">
+      <div class="hab-card">
+        <img src="images/habitacion-doble.jpeg" alt="Habitación Doble">
+        <div class="hab-card-body">
+          <h4>Habitación Doble</h4>
+          <p>Cómoda habitación con cama de 2 plazas, ideal para parejas o viajeros que buscan comodidad y privacidad total.</p>
+          <span class="hab-tag"><i class="fas fa-bath"></i> Baño privado</span>
+          <span class="hab-tag"><i class="fas fa-user-friends"></i> 1-2 personas</span>
+        </div>
+      </div>
+      <div class="hab-card">
+        <img src="images/habitacion-familiar.jpeg" alt="Habitación Familiar">
+        <div class="hab-card-body">
+          <h4>Habitación Familiar</h4>
+          <p>Amplia habitación equipada para grupos o familias, con camas para hasta 5 personas y baño privado.</p>
+          <span class="hab-tag"><i class="fas fa-bath"></i> Baño privado</span>
+          <span class="hab-tag"><i class="fas fa-users"></i> Hasta 5 personas</span>
+        </div>
+      </div>
+      <div class="hab-card">
+        <img src="images/habitacion-individual.jpg" alt="Habitación Individual">
+        <div class="hab-card-body">
+          <h4>Habitación Individual</h4>
+          <p>Perfecta para viajeros solos que buscan un espacio acogedor y tranquilo a un precio accesible.</p>
+          <span class="hab-tag"><i class="fas fa-bath"></i> Baño compartido</span>
+          <span class="hab-tag"><i class="fas fa-user"></i> 1 persona</span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="https://wa.me/56994999752?text=Hola,%20quiero%20reservar%20en%20Hostal%20La%20Casa%20del%20Puente" target="_blank" class="btn-whatsapp" style="display:inline-flex;padding:14px 40px;font-size:1.05rem">
+        <i class="fab fa-whatsapp"></i> Reservá Ahora
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- UBICACION -->
+<section class="ubicacion" id="ubicacion">
+  <div class="container">
+    <div class="section-title">
+      <span>Cómo llegar</span>
+      <h2>Ubicación Privilegiada</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="ubicacion-grid">
+      <div class="ubicacion-info">
+        <h3>Bretaña 1921, Ñuñoa<br>Región Metropolitana</h3>
+        <p style="color:#777;margin:12px 0 28px;line-height:1.7">Estamos ubicados en uno de los barrios más tranquilos y bien conectados de Santiago, a minutos de los principales puntos de interés.</p>
+        <div class="punto-interes">
+          <div class="ico"><i class="fas fa-subway"></i></div>
+          <p><strong>Metro Monseñor Eyzaguirre (L3)</strong><br>A solo 10 minutos caminando</p>
+        </div>
+        <div class="punto-interes">
+          <div class="ico"><i class="fas fa-futbol"></i></div>
+          <p><strong>Estadio Nacional</strong><br>A pasos del hostal</p>
+        </div>
+        <div class="punto-interes">
+          <div class="ico"><i class="fas fa-hospital"></i></div>
+          <p><strong>Hospital de Carabineros</strong><br>En las cercanías</p>
+        </div>
+        <div class="punto-interes">
+          <div class="ico"><i class="fas fa-shield-alt"></i></div>
+          <p><strong>Escuela de Suboficiales</strong><br>Zona de alta conectividad</p>
+        </div>
+      </div>
+      <div class="mapa-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.5!2d-70.6177!3d-33.4613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sBreta%C3%B1a%201921%2C%20%C3%91u%C3%B1oa!5e0!3m2!1ses!2scl!4v1"
+          allowfullscreen="" loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO PRACTICA -->
+<section class="info-practica">
+  <div class="container">
+    <div class="section-title">
+      <span style="color:var(--azul)">Información útil</span>
+      <h2>Todo lo que necesitas saber</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="info-grid">
+      <div class="info-item">
+        <i class="fas fa-sign-in-alt"></i>
+        <h4>Check-in</h4>
+        <p>Desde las 15:00<br>hasta las 23:00 hrs</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-sign-out-alt"></i>
+        <h4>Check-out</h4>
+        <p>Hasta las 12:00<br>del mediodía</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-credit-card"></i>
+        <h4>Formas de pago</h4>
+        <p>Efectivo, transferencia<br>y tarjetas</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-car"></i>
+        <h4>Estacionamiento</h4>
+        <p>Privado y gratuito<br>previa reserva</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVA CTA -->
+<section class="reserva" id="reserva">
+  <h2>¿Listo para reservar?</h2>
+  <p>Habitaciones disponibles desde $25.000 diarios. Reserva fácil y rápido.</p>
+  <div class="reserva-btns">
+    <a href="https://wa.me/56994999752?text=Hola,%20quiero%20reservar%20en%20Hostal%20La%20Casa%20del%20Puente" target="_blank" class="btn-whatsapp">
+      <i class="fab fa-whatsapp" style="margin-right:8px"></i>Reservar Ahora
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom:8px">
+    <strong style="color:#fff">Hostal La Casa del Puente</strong> · Bretaña 1921, Ñuñoa, Santiago
+  </p>
+  <p>
+    <a href="tel:+56994999752">+56 9 9499 9752</a>
+  </p>
+  <p style="margin-top:12px;font-size:0.78rem;color:#555">© 2025 Hostal La Casa del Puente · Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
