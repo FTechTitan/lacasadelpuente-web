@@ -283,21 +283,14 @@
           <input type="text" id="bk-rango" placeholder="Selecciona fechas" readonly>
         </div>
         <div class="bk-field">
-          <label>Adultos</label>
+          <label>Personas</label>
           <select id="bk-adultos">
-            <option value="1">1 adulto</option>
-            <option value="2" selected>2 adultos</option>
-            <option value="3">3 adultos</option>
-            <option value="4">4 adultos</option>
-          </select>
-        </div>
-        <div class="bk-field">
-          <label>Niños</label>
-          <select id="bk-ninos">
-            <option value="0" selected>0 niños</option>
-            <option value="1">1 niño</option>
-            <option value="2">2 niños</option>
-            <option value="3">3 niños</option>
+            <option value="1">1 persona</option>
+            <option value="2" selected>2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4">4 personas</option>
+            <option value="5">5 personas</option>
+            <option value="6">6 personas</option>
           </select>
         </div>
         <button class="bk-btn-buscar" onclick="buscarDisponibilidad()">
@@ -562,15 +555,12 @@
     if (!checkin || !checkout) { alert('Selecciona las fechas de llegada y salida'); return; }
 
     var adultos = document.getElementById('bk-adultos').value;
-    var ninos   = document.getElementById('bk-ninos').value;
 
     var url = 'https://app.otasync.me/engine/es/index.php'
       + '?property_code=MTE0OTU'
       + '&dfrom='    + checkin
       + '&dto='      + checkout
       + '&adults='   + adultos
-      + '&children=' + ninos
-      + '&chlidren=' + ninos
       + '&currency=CLP';
 
     document.getElementById('motor-iframe').src = url;
