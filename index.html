@@ -7,6 +7,9 @@
 <meta name="description" content="Hostal La Casa del Puente en Ñuñoa, Santiago. Tu lugar tranquilo en el corazón de Santiago. A 4 minutos del Metro Monseñor Eyzaguirre.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
@@ -34,12 +37,12 @@
   /* HERO */
   .hero {
     min-height: 100vh;
-    background: linear-gradient(rgba(20,30,40,0.6), rgba(20,30,40,0.7)),
+    background: linear-gradient(rgba(20,30,40,0.55), rgba(20,30,40,0.65)),
       url('images/header.jpeg') center/cover no-repeat;
     display: flex; align-items: center; justify-content: center; text-align: center;
     padding: 100px 20px 60px;
   }
-  .hero-content { max-width: 760px; }
+  .hero-content { max-width: 860px; width: 100%; }
   .hero-badge {
     display: inline-block; background: var(--azul); color: #fff;
     font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
@@ -52,6 +55,84 @@
   }
   .hero p { font-size: 1.15rem; color: #ddd; margin-bottom: 36px; font-weight: 300; }
   .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* BOOKING CARD en el hero */
+  .hero-booking-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    margin-top: 40px;
+    text-align: left;
+  }
+  .hero-booking-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--oscuro);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .bk-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: flex-end;
+  }
+  .bk-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 130px;
+  }
+  .bk-field label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #888;
+  }
+  .bk-field input,
+  .bk-field select {
+    height: 46px;
+    padding: 0 14px;
+    border: 1.5px solid #e0e6ed;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: 'Lato', sans-serif;
+    color: var(--oscuro);
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: border 0.2s;
+    width: 100%;
+  }
+  .bk-field input:focus,
+  .bk-field select:focus { border-color: var(--azul); }
+  .bk-field input[readonly] { cursor: pointer; }
+  .bk-btn-buscar {
+    height: 46px;
+    padding: 0 28px;
+    background: var(--azul);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: background 0.2s;
+    font-family: 'Lato', sans-serif;
+  }
+  .bk-btn-buscar:hover { background: #1490b3; }
+  @media (max-width: 640px) {
+    .bk-field { min-width: calc(50% - 7px); }
+    .bk-btn-buscar { width: 100%; justify-content: center; margin-top: 4px; }
+    .hero-booking-card { padding: 20px 16px; }
+  }
   .btn-primary {
     background: var(--azul); color: #fff; padding: 14px 32px;
     border-radius: 4px; text-decoration: none; font-weight: 700;
@@ -192,11 +273,41 @@
     <div class="hero-badge">Hostal en Ñuñoa · Santiago</div>
     <h1>Tu lugar tranquilo<br>en el corazón de Santiago</h1>
     <p>Habitaciones cómodas, atención personalizada y todo lo que necesitas<br>a pasos del metro y los mejores barrios de Santiago.</p>
-    <div class="btn-group">
-      <a href="https://wa.me/56994999752?text=Hola,%20quiero%20reservar%20en%20Hostal%20La%20Casa%20del%20Puente" target="_blank" class="btn-primary">
-        <i class="fab fa-whatsapp" style="margin-right:8px"></i>Reservar
-      </a>
-      <a href="index.html#habitaciones" class="btn-outline">Ver habitaciones</a>
+
+    <!-- Booking card -->
+    <div class="hero-booking-card">
+      <h3><i class="fas fa-search" style="color:var(--azul);margin-right:8px"></i>Busca disponibilidad</h3>
+      <div class="bk-form">
+        <div class="bk-field">
+          <label>Llegada</label>
+          <input type="text" id="bk-checkin" placeholder="dd/mm/aaaa" readonly>
+        </div>
+        <div class="bk-field">
+          <label>Salida</label>
+          <input type="text" id="bk-checkout" placeholder="dd/mm/aaaa" readonly>
+        </div>
+        <div class="bk-field">
+          <label>Adultos</label>
+          <select id="bk-adultos">
+            <option value="1">1 adulto</option>
+            <option value="2" selected>2 adultos</option>
+            <option value="3">3 adultos</option>
+            <option value="4">4 adultos</option>
+          </select>
+        </div>
+        <div class="bk-field">
+          <label>Niños</label>
+          <select id="bk-ninos">
+            <option value="0" selected>0 niños</option>
+            <option value="1">1 niño</option>
+            <option value="2">2 niños</option>
+            <option value="3">3 niños</option>
+          </select>
+        </div>
+        <button class="bk-btn-buscar" onclick="buscarDisponibilidad()">
+          <i class="fas fa-search"></i> Ver disponibilidad
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -402,175 +513,96 @@
   </div>
 </section>
 
-<!-- RESERVA CTA -->
+<!-- RESERVA: resultados motor + WhatsApp -->
 <section class="reserva" id="reserva">
   <h2>¿Listo para reservar?</h2>
-  <p>Habitaciones disponibles desde $25.000 diarios. Selecciona tus fechas y reserva en línea.</p>
+  <p>Habitaciones disponibles desde $25.000 diarios. Usa el buscador de arriba o escríbenos.</p>
 
-  <!-- Widget motor de reservas OTASync -->
-  <div class="booking-widget">
-    <div class="booking-form">
-      <div class="booking-field">
-        <label for="bk-checkin"><i class="fas fa-calendar-alt"></i> Llegada</label>
-        <input type="date" id="bk-checkin">
-      </div>
-      <div class="booking-field">
-        <label for="bk-checkout"><i class="fas fa-calendar-alt"></i> Salida</label>
-        <input type="date" id="bk-checkout">
-      </div>
-      <div class="booking-field">
-        <label for="bk-adultos"><i class="fas fa-user"></i> Adultos</label>
-        <select id="bk-adultos">
-          <option value="1">1 Adulto</option>
-          <option value="2" selected>2 Adultos</option>
-          <option value="3">3 Adultos</option>
-          <option value="4">4 Adultos</option>
-        </select>
-      </div>
-      <div class="booking-field">
-        <label for="bk-ninos"><i class="fas fa-child"></i> Niños</label>
-        <select id="bk-ninos">
-          <option value="0" selected>0 Niños</option>
-          <option value="1">1 Niño</option>
-          <option value="2">2 Niños</option>
-          <option value="3">3 Niños</option>
-        </select>
-      </div>
-      <button class="btn-buscar" onclick="buscarDisponibilidad()">
-        <i class="fas fa-search"></i> Ver disponibilidad
+  <div id="motor-container" style="display:none; margin: 0 auto; max-width:1000px;">
+    <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+      <button onclick="cerrarMotor()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 16px;border-radius:6px;cursor:pointer;font-family:'Lato',sans-serif;">
+        ✕ Cerrar
       </button>
     </div>
+    <iframe id="motor-iframe" src="" width="100%" height="700" frameborder="0"
+      style="border-radius:12px; background:#fff; display:block;"></iframe>
   </div>
 
-  <!-- Iframe motor OTASync (se activa al buscar) -->
-  <div id="motor-container" style="display:none; margin-top:32px;">
-    <iframe id="motor-iframe"
-      src=""
-      width="100%"
-      height="700"
-      frameborder="0"
-      style="border-radius:12px; background:#fff;">
-    </iframe>
-  </div>
-
-  <div class="reserva-btns" style="margin-top:28px;">
+  <div class="reserva-btns" id="reserva-btns">
     <a href="https://wa.me/56994999752?text=Hola,%20quiero%20reservar%20en%20Hostal%20La%20Casa%20del%20Puente" target="_blank" class="btn-whatsapp">
       <i class="fab fa-whatsapp" style="margin-right:8px"></i>Reservar por WhatsApp
     </a>
   </div>
 </section>
 
-<style>
-  .booking-widget {
-    max-width: 900px;
-    margin: 32px auto 0;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 16px;
-    padding: 28px 24px;
-    backdrop-filter: blur(4px);
-  }
-  .booking-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: flex-end;
-    justify-content: center;
-  }
-  .booking-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 150px;
-    flex: 1;
-  }
-  .booking-field label {
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.85);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .booking-field input,
-  .booking-field select {
-    height: 46px;
-    padding: 0 14px;
-    border: 2px solid rgba(255,255,255,0.4);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-    font-size: 0.95rem;
-    font-family: 'Lato', sans-serif;
-    outline: none;
-    transition: border 0.2s;
-  }
-  .booking-field input:focus,
-  .booking-field select:focus { border-color: #fff; }
-  .booking-field select option { background: #1e2a35; color: #fff; }
-  .btn-buscar {
-    height: 46px;
-    padding: 0 28px;
-    background: var(--azul);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: opacity 0.2s;
-    white-space: nowrap;
-  }
-  .btn-buscar:hover { opacity: 0.85; }
-  @media (max-width: 600px) {
-    .booking-field { min-width: 100%; }
-    .btn-buscar { width: 100%; justify-content: center; }
-  }
-</style>
-
 <script>
-  // Setear fechas por defecto (hoy y mañana)
-  (function() {
-    var hoy = new Date();
-    var manana = new Date();
-    manana.setDate(hoy.getDate() + 1);
-    var fmt = function(d) { return d.toISOString().split('T')[0]; };
-    document.getElementById('bk-checkin').value = fmt(hoy);
-    document.getElementById('bk-checkout').value = fmt(manana);
-    document.getElementById('bk-checkin').min = fmt(hoy);
-    document.getElementById('bk-checkout').min = fmt(manana);
-    document.getElementById('bk-checkin').addEventListener('change', function() {
-      var ci = new Date(this.value + 'T12:00:00');
-      ci.setDate(ci.getDate() + 1);
-      document.getElementById('bk-checkout').min = fmt(ci);
-      if (document.getElementById('bk-checkout').value <= this.value) {
-        document.getElementById('bk-checkout').value = fmt(ci);
+  // Flatpickr — calendarios de llegada y salida
+  var hoy = new Date();
+  var manana = new Date(); manana.setDate(hoy.getDate() + 1);
+  var pasado = new Date(); pasado.setDate(hoy.getDate() + 2);
+
+  var fpCheckin = flatpickr('#bk-checkin', {
+    locale: 'es',
+    dateFormat: 'd/m/Y',
+    minDate: 'today',
+    defaultDate: manana,
+    disableMobile: true,
+    onChange: function(dates) {
+      if (dates[0]) {
+        var minCO = new Date(dates[0]);
+        minCO.setDate(minCO.getDate() + 1);
+        fpCheckout.set('minDate', minCO);
+        if (fpCheckout.selectedDates[0] && fpCheckout.selectedDates[0] <= dates[0]) {
+          fpCheckout.setDate(minCO);
+        }
       }
-    });
-  })();
+    }
+  });
+
+  var fpCheckout = flatpickr('#bk-checkout', {
+    locale: 'es',
+    dateFormat: 'd/m/Y',
+    minDate: pasado,
+    defaultDate: pasado,
+    disableMobile: true,
+  });
+
+  function fmtISO(fp) {
+    var d = fp.selectedDates[0];
+    if (!d) return '';
+    var y = d.getFullYear();
+    var m = String(d.getMonth()+1).padStart(2,'0');
+    var day = String(d.getDate()).padStart(2,'0');
+    return y+'-'+m+'-'+day;
+  }
 
   function buscarDisponibilidad() {
-    var checkin  = document.getElementById('bk-checkin').value;
-    var checkout = document.getElementById('bk-checkout').value;
-    var adultos  = document.getElementById('bk-adultos').value;
-    var ninos    = document.getElementById('bk-ninos').value;
+    var checkin  = fmtISO(fpCheckin);
+    var checkout = fmtISO(fpCheckout);
+    if (!checkin || !checkout) { alert('Selecciona las fechas de llegada y salida'); return; }
+
+    var adultos = document.getElementById('bk-adultos').value;
+    var ninos   = document.getElementById('bk-ninos').value;
 
     var url = 'https://app.otasync.me/engine/es/index.php'
       + '?property_code=MTE0OTU'
-      + '&dfrom=' + checkin
-      + '&dto='   + checkout
-      + '&adults=' + adultos
+      + '&dfrom='    + checkin
+      + '&dto='      + checkout
+      + '&adults='   + adultos
       + '&children=' + ninos
       + '&chlidren=' + ninos
       + '&currency=CLP';
 
+    document.getElementById('motor-iframe').src = url;
     var container = document.getElementById('motor-container');
-    var iframe    = document.getElementById('motor-iframe');
-    iframe.src = url;
     container.style.display = 'block';
-    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('reserva').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function cerrarMotor() {
+    var container = document.getElementById('motor-container');
+    container.style.display = 'none';
+    document.getElementById('motor-iframe').src = '';
   }
 </script>
 
